@@ -1,0 +1,12 @@
+{
+  "pipeline": "C",
+  "seed": 37,
+  "best_epoch": 950,
+  "epochs_run": 1150,
+  "best_validation_accuracy": 0.8821138143539429,
+  "best_validation_loss": 0.4717137813568115,
+  "training_seconds": 65.44879069700255,
+  "parameters": 548904,
+  "checkpoint_sha256": "3e894921f84b604780074fe6e0b86389a19609e3658831161b67ceee510446dc",
+  "config_sha256": "39984587a0e18c3624cbd5069e159a2a3d4faac6705aa7d1cfd67d10040d3d64"
+}

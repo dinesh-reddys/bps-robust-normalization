@@ -1,0 +1,92 @@
+[
+  {
+    "pipeline": "A",
+    "fraction": 0,
+    "inlier_radius_ratio": 1.0,
+    "feature_drift": 0.0
+  },
+  {
+    "pipeline": "A",
+    "fraction": 0.01,
+    "inlier_radius_ratio": 0.19967476030190787,
+    "feature_drift": 0.3853954691973201
+  },
+  {
+    "pipeline": "A",
+    "fraction": 0.02,
+    "inlier_radius_ratio": 0.19948101292053858,
+    "feature_drift": 0.412665514974804
+  },
+  {
+    "pipeline": "A",
+    "fraction": 0.05,
+    "inlier_radius_ratio": 0.1991371139883995,
+    "feature_drift": 0.4602319728190644
+  },
+  {
+    "pipeline": "A",
+    "fraction": 0.1,
+    "inlier_radius_ratio": 0.19875445465246835,
+    "feature_drift": 0.48566843456775355
+  },
+  {
+    "pipeline": "B",
+    "fraction": 0,
+    "inlier_radius_ratio": 1.0,
+    "feature_drift": 0.0
+  },
+  {
+    "pipeline": "B",
+    "fraction": 0.01,
+    "inlier_radius_ratio": 0.20249953866004944,
+    "feature_drift": 0.3837908727093235
+  },
+  {
+    "pipeline": "B",
+    "fraction": 0.02,
+    "inlier_radius_ratio": 0.20242788145939508,
+    "feature_drift": 0.4139678697531961
+  },
+  {
+    "pipeline": "B",
+    "fraction": 0.05,
+    "inlier_radius_ratio": 0.20237310230731964,
+    "feature_drift": 0.46244105991521506
+  },
+  {
+    "pipeline": "B",
+    "fraction": 0.1,
+    "inlier_radius_ratio": 0.2023570736249288,
+    "feature_drift": 0.48884645561063245
+  },
+  {
+    "pipeline": "C",
+    "fraction": 0,
+    "inlier_radius_ratio": 1.0,
+    "feature_drift": 0.0
+  },
+  {
+    "pipeline": "C",
+    "fraction": 0.01,
+    "inlier_radius_ratio": 0.9867411851882935,
+    "feature_drift": 0.011823245297641706
+  },
+  {
+    "pipeline": "C",
+    "fraction": 0.02,
+    "inlier_radius_ratio": 0.9704507688681284,
+    "feature_drift": 0.02515511218721339
+  },
+  {
+    "pipeline": "C",
+    "fraction": 0.05,
+    "inlier_radius_ratio": 0.88138414422671,
+    "feature_drift": 0.09745043086468752
+  },
+  {
+    "pipeline": "C",
+    "fraction": 0.1,
+    "inlier_radius_ratio": 0.18060936530431113,
+    "feature_drift": 0.4795663862603378
+  }
+]

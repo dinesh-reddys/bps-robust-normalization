@@ -1,0 +1,110 @@
+{
+  "dataset": "ModelNet40 point clouds sampled by PointNet authors",
+  "original_url": "https://shapenet.cs.stanford.edu/media/modelnet40_ply_hdf5_2048.zip",
+  "mirror": "https://share.phys.ethz.ch/~gseg/Predator/data/modelnet40_ply_hdf5_2048/",
+  "retrieved_utc": "2026-11-01T15:09:49Z",
+  "files": [
+    {
+      "file": "ply_data_train0.h5",
+      "url": "https://share.phys.ethz.ch/~gseg/Predator/data/modelnet40_ply_hdf5_2048/ply_data_train0.h5",
+      "bytes": 73523284,
+      "sha256": "996e8f2741c5c2662314a79c4e7b461399e2835dff28925046e7e42339f9a74d"
+    },
+    {
+      "file": "ply_data_train1.h5",
+      "url": "https://share.phys.ethz.ch/~gseg/Predator/data/modelnet40_ply_hdf5_2048/ply_data_train1.h5",
+      "bytes": 73196621,
+      "sha256": "0efaab3f3a7903f78037da933682267dfcdc548dc97aadda25bac218a1930276"
+    },
+    {
+      "file": "ply_data_train2.h5",
+      "url": "https://share.phys.ethz.ch/~gseg/Predator/data/modelnet40_ply_hdf5_2048/ply_data_train2.h5",
+      "bytes": 72245751,
+      "sha256": "d705fc9b55b80e0a45103ec6a2938968f1e704c6bec8f2624bebbf4e435bb50a"
+    },
+    {
+      "file": "ply_data_train3.h5",
+      "url": "https://share.phys.ethz.ch/~gseg/Predator/data/modelnet40_ply_hdf5_2048/ply_data_train3.h5",
+      "bytes": 72932856,
+      "sha256": "ee6fb75f9cb85bc36e589e7ebf23b3cd9c42ef00566c29e7a6679e83ed575495"
+    },
+    {
+      "file": "ply_data_train4.h5",
+      "url": "https://share.phys.ethz.ch/~gseg/Predator/data/modelnet40_ply_hdf5_2048/ply_data_train4.h5",
+      "bytes": 58634835,
+      "sha256": "15143c2e796907767bb795d505a22d46d776e710ae55b9487e5a9684732bd1fa"
+    },
+    {
+      "file": "ply_data_test0.h5",
+      "url": "https://share.phys.ethz.ch/~gseg/Predator/data/modelnet40_ply_hdf5_2048/ply_data_test0.h5",
+      "bytes": 70992141,
+      "sha256": "fb1631826ff4102aac03ee8a59ed309f8ce839a210b6da1a40a2e4d45bba9d56"
+    },
+    {
+      "file": "ply_data_test1.h5",
+      "url": "https://share.phys.ethz.ch/~gseg/Predator/data/modelnet40_ply_hdf5_2048/ply_data_test1.h5",
+      "bytes": 14356248,
+      "sha256": "dc002c8e9e168cedd22afbdfa8f1fae19d0f2fafb6efa993e4c88fbcaee8f353"
+    },
+    {
+      "file": "shape_names.txt",
+      "url": "https://share.phys.ethz.ch/~gseg/Predator/data/modelnet40_ply_hdf5_2048/shape_names.txt",
+      "bytes": 275,
+      "sha256": "7cf9a7b0d1f39eeb861dc43406947d29c1cd429c2f4ff2530ec153d4b8d83609"
+    },
+    {
+      "file": "train_files.txt",
+      "url": "https://share.phys.ethz.ch/~gseg/Predator/data/modelnet40_ply_hdf5_2048/train_files.txt",
+      "bytes": 245,
+      "sha256": "7a4ed89e2eeafae46139e1eaaad822f99684b73515feb87077cda4258e84440a"
+    },
+    {
+      "file": "test_files.txt",
+      "url": "https://share.phys.ethz.ch/~gseg/Predator/data/modelnet40_ply_hdf5_2048/test_files.txt",
+      "bytes": 96,
+      "sha256": "06fd019bbe643e2e4c32c20993fd4888540d4b985b9f95dbde74100f4c340427"
+    },
+    {
+      "file": "ply_data_train_0_id2file.json",
+      "url": "https://share.phys.ethz.ch/~gseg/Predator/data/modelnet40_ply_hdf5_2048/ply_data_train_0_id2file.json",
+      "bytes": 52945,
+      "sha256": "da70e19eef29744b97cd76356afb9e5ace568b67f9a014cdd3877e103ed0fff5"
+    },
+    {
+      "file": "ply_data_train_1_id2file.json",
+      "url": "https://share.phys.ethz.ch/~gseg/Predator/data/modelnet40_ply_hdf5_2048/ply_data_train_1_id2file.json",
+      "bytes": 52515,
+      "sha256": "9ffbdd010eb07232a7bcf9b62a3330d5f156f03ded7c77951cb62c4b7f76b13c"
+    },
+    {
+      "file": "ply_data_train_2_id2file.json",
+      "url": "https://share.phys.ethz.ch/~gseg/Predator/data/modelnet40_ply_hdf5_2048/ply_data_train_2_id2file.json",
+      "bytes": 52667,
+      "sha256": "e309fcbaf8399eeec5625a716873cb9a152e2b1c016cd4879ddbc5213c763b8e"
+    },
+    {
+      "file": "ply_data_train_3_id2file.json",
+      "url": "https://share.phys.ethz.ch/~gseg/Predator/data/modelnet40_ply_hdf5_2048/ply_data_train_3_id2file.json",
+      "bytes": 52383,
+      "sha256": "188e8332665e9f14d3c6e65c16f452fbdeafe33461896e4d25e7d9706272dc66"
+    },
+    {
+      "file": "ply_data_train_4_id2file.json",
+      "url": "https://share.phys.ethz.ch/~gseg/Predator/data/modelnet40_ply_hdf5_2048/ply_data_train_4_id2file.json",
+      "bytes": 42383,
+      "sha256": "58a2a50c2dbf607bd59efafa5be6a04083c8ffc3e864a7e94c4bc639d1a78108"
+    },
+    {
+      "file": "ply_data_test_0_id2file.json",
+      "url": "https://share.phys.ethz.ch/~gseg/Predator/data/modelnet40_ply_hdf5_2048/ply_data_test_0_id2file.json",
+      "bytes": 53583,
+      "sha256": "a821815a14bd8ba38b8036fdd7bc5798a3d16d098a2bd5be52afcd038013079a"
+    },
+    {
+      "file": "ply_data_test_1_id2file.json",
+      "url": "https://share.phys.ethz.ch/~gseg/Predator/data/modelnet40_ply_hdf5_2048/ply_data_test_1_id2file.json",
+      "bytes": 11135,
+      "sha256": "74fb14133606193f452d60a72d6fc053e9604995c263457184260dfcfbd3ce26"
+    }
+  ]
+}

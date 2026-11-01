@@ -1,0 +1,9 @@
+{
+  "test_index": 3,
+  "class": "chair",
+  "fraction": 0.02,
+  "radius": 5,
+  "corruption_seed": 101,
+  "selection": "First chair in the standard test-file order, independent of predictions.",
+  "plot_note": "Top panels show distant outliers; bottom panels zoom to the object. Zoom panels clip distant outliers; no point removal is performed."
+}

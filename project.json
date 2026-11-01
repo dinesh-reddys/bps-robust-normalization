@@ -1,0 +1,15 @@
+{
+  "author": "Somavarapu Dinesh Reddy",
+  "author_uppercase": "SOMAVARAPU DINESH REDDY",
+  "roll_number": "23EC39025",
+  "department": "Electronics and Electrical Communication Engineering",
+  "programme": "M.Tech in Vision and Intelligent Systems",
+  "institution": "Indian Institute of Technology Kharagpur",
+  "supervisor": "Prof. Prabir Kumar Biswas",
+  "report_date": "2 November 2026",
+  "presentation_limit_seconds": 600,
+  "presentation_target_seconds": 540,
+  "qa_seconds": 120,
+  "report_target_pages": [10, 12],
+  "report_format": "LaTeX source and compiled PDF"
+}

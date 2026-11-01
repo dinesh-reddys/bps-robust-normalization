@@ -1,0 +1,21 @@
+{
+  "test_index": 3,
+  "true_category": "chair",
+  "outlier_fraction": 0.02,
+  "outlier_radius": 5.0,
+  "training_seed": 13,
+  "predictions": {
+    "A": {
+      "clean": "chair",
+      "corrupted": "bowl"
+    },
+    "B": {
+      "clean": "chair",
+      "corrupted": "vase"
+    },
+    "C": {
+      "clean": "chair",
+      "corrupted": "chair"
+    }
+  }
+}

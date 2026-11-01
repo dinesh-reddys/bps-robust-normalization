@@ -1,0 +1,15 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "bps-robust-normalization"
+version = "0.1.0"
+description = "BPS classification with a controlled normalization and outlier study"
+readme = "README.md"
+requires-python = ">=3.12"
+authors = [{name = "Somavarapu Dinesh Reddy"}]
+dependencies = ["numpy==2.2.6", "scipy==1.15.3", "torch==2.9.1"]
+
+[tool.setuptools.packages.find]
+where = ["src"]

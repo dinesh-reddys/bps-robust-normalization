@@ -1,0 +1,12 @@
+{
+  "category": "chair",
+  "test_index": 3,
+  "object_id": "chair/chair_0978.ply",
+  "source": "ModelNet40 PointNet HDF5 conversion",
+  "source_file": "ply_data_test0.h5",
+  "source_url": "https://share.phys.ethz.ch/~gseg/Predator/data/modelnet40_ply_hdf5_2048/ply_data_test0.h5",
+  "selection": "First chair in standard test-file order, independent of predictions",
+  "sample_sha256": "4cf4a6f34fe43a972c93fc7d60bb3cc648870c1c46c79fa7a49d8582ec6ca866",
+  "citation": "Wu et al., 3D ShapeNets, CVPR 2015; PointNet data conversion, Qi et al., CVPR 2017",
+  "usage": "Research example. Original dataset rights and terms remain applicable."
+}

@@ -1,0 +1,22 @@
+{
+  "completed_utc": "2026-11-01T17:35:25.602517+00:00",
+  "report_pages": 12,
+  "presentation_slides": 10,
+  "editable_native_charts": 3,
+  "presentation_target_seconds": 540,
+  "presentation_limit_seconds": 600,
+  "qa_seconds_separate": 120,
+  "speaker_script_words": 824,
+  "trained_models": 9,
+  "test_objects": 2468,
+  "verified_metric_rows": 333,
+  "geometry_tests_passed": 13,
+  "data_model_and_metric_audit_passed": true,
+  "report_visual_review": "All pages inspected; corrected diagram spacing and figure labels",
+  "slide_visual_review": "All slides inspected; all native charts structurally validated",
+  "signatures": "Blank for student review and supervisor endorsement",
+  "files": {
+    "BTP1_Report.pdf": "e19ce2f079537daddd04c3efbe3a8c1b7458de4850eabfbf190eb2d52f85f1b0",
+    "BTP1_Presentation.pptx": "c1c921dc6bf033fa81e999a92222cd37e4db8a4f277c3fd78b23250144676d57"
+  }
+}

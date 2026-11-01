@@ -1,0 +1,268 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=25mm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,graphicx,booktabs,array}
+\usepackage{caption}
+\usepackage[hidelinks]{hyperref}
+\usepackage{enumitem}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\renewcommand{\baselinestretch}{1.06}
+\captionsetup{font=small,labelfont=bf}
+\setlist{nosep,leftmargin=18pt}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\fig}[3]{\begin{figure}[!ht]\centering\includegraphics[width=#2\linewidth]{images/#1.pdf}\caption{#3}\end{figure}}
+\input{generated_results.tex}
+\begin{document}
+\begin{titlepage}
+\centering
+{\Large Indian Institute of Technology Kharagpur\par}
+\vspace{6mm}
+{\large Department of Electronics and Electrical\\Communication Engineering\par}
+\vspace{13mm}
+{\LARGE\bfseries Effect of Robust Normalization on\\[3mm] BPS Based 3D Object Classification\par}
+\vspace{8mm}
+{\large BTP 1 Evaluation Report\par}
+\vspace{9mm}
+{\large\bfseries SOMAVARAPU DINESH REDDY\par}
+{\large Roll Number 23EC39025\par}
+\vspace{3mm}
+{M.Tech in Vision and Intelligent Systems\par}
+\vspace{5mm}
+{Supervisor: Prof. Prabir Kumar Biswas\par}
+{2 November 2026\par}
+\vspace{11mm}
+\begin{minipage}{\linewidth}
+\textbf{Self declaration}\par
+I declare that this report presents bona fide work prepared for my BTP 1 evaluation. The research ideas, dataset, model architecture and material obtained from other sources are referenced and attributed. The use of computational assistance is acknowledged at the end of the report. I take responsibility for the contents of the report submitted under my name.
+\vspace{7mm}
+
+Student signature: \rule{55mm}{0.3pt}\hfill Date: \rule{27mm}{0.3pt}
+\vspace{10mm}
+
+\textbf{Supervisor endorsement}\par
+Reviewed and endorsed for the BTP 1 evaluation.
+\vspace{7mm}
+
+Supervisor signature: \rule{51mm}{0.3pt}\hfill Date: \rule{27mm}{0.3pt}
+
+Prof. Prabir Kumar Biswas
+\end{minipage}
+\end{titlepage}
+\setcounter{page}{2}
+
+\section*{Abstract}
+This study examines how preprocessing affects 3D object classification when point clouds contain distant outliers. Basis Point Sets (BPS) convert each cloud into distances from a shared set of reference points. A multilayer perceptron classifies the resulting vector. The original BPS normalization subtracts the mean and divides by the maximum radius. A distant point can increase this radius and shrink the main object in the normalized coordinates.
+
+Three pipelines isolate this effect: mean centring with maximum scaling, median centring with maximum scaling, and median centring with 95th-percentile scaling. Each pipeline uses the same BPS basis and classifier architecture, trained on clean ModelNet40 point clouds with three training seeds. Evaluation replaces a controlled fraction of points with distant outliers at three distances. For the radius-five, two-percent condition, pipelines A, B and C achieve \PrimaryA\%, \PrimaryB\% and \PrimaryC\% mean overall accuracy, respectively. Clean accuracies are \CleanA\%, \CleanB\% and \CleanC\%. Geometry measurements connect prediction changes to object shrinkage and feature drift. Heavy contamination also tests the failure of percentile scaling. These findings concern a controlled distant-outlier model; they do not establish robustness to arbitrary sensor corruptions.
+
+\section{Introduction}
+An object point cloud is a collection of sampled surface coordinates. Unlike an image, it has no regular pixel grid and its point order has no geometric meaning. A classification method must map this representation to an object category while handling variation in sampling and coordinates.
+
+BPS offers a direct route to a conventional classifier. It records distances from fixed reference locations to the cloud, giving every object a feature vector of the same length~\cite{bps}. The classifier can then use familiar fully connected layers. This separation makes preprocessing a useful subject for investigation: a coordinate change affects the entire feature vector before learning is applied.
+
+\textbf{Research question.} Can robust centring and scaling reduce classification degradation caused by distant outliers while maintaining clean-data performance?
+
+The work implements a BPS classifier, compares three normalization rules, and measures both predictive and geometric effects. The centring-only control distinguishes changes in location estimation from changes in scale estimation. The extension follows a limitation already identified in the BPS supplementary material. Its contribution is the specified classification experiment and analysis, rather than a claim that robust normalization is a new general method.
+\clearpage
+
+\section{Related Work}
+\textbf{ModelNet and 3D ShapeNets.} Wu et al. introduced ModelNet for learning and evaluating object shape representations~\cite{shapenets}. This study uses the public 2048-point HDF5 conversion distributed for PointNet. The data represents sampled CAD surfaces. It does not reproduce the incomplete views or clutter of a physical depth sensor.
+
+\textbf{PointNet.} Qi et al. learn per-point features and aggregate them using a symmetric function, allowing classification of unordered point sets~\cite{pointnet}. PointNet is an important reference for direct point processing. Here it provides context; no PointNet training or empirical comparison is claimed.
+
+\textbf{Basis Point Sets.} Prokudin et al. encode a cloud using nearest-point distances or displacement vectors from a fixed basis~\cite{bps}. Their classification example uses distance features and an MLP. The supplied architecture and random-basis sampling inform this implementation. The BPS supplementary discussion identifies outliers that alter size normalization in human-mesh registration and suggests robust normalization or synthetic noise as possible remedies. The present study investigates a particular median-and-percentile variant for object classification.
+
+\textbf{Corruption evaluation.} Ren et al. benchmark point-cloud classifiers under multiple corruptions~\cite{pointcloudc}. Their work motivates evaluation beyond clean accuracy. The spherical replacement protocol here is a diagnostic experiment devised to isolate a preprocessing effect. Its results are not official PointCloud-C scores and should not be compared numerically with that benchmark.
+
+\textbf{Outlier filtering.} DUP-Net combines statistical outlier removal with learned upsampling for adversarial point-cloud defence~\cite{dupnet}. It establishes that preprocessing which removes points is an existing line of work. The methods studied here retain the corrupted cloud and change only its centre and scale estimates. A filter is a relevant future comparison, especially because very distant synthetic outliers may be straightforward to identify.
+
+\begin{table}[!ht]
+\centering\small
+\begin{tabular}{L{31mm}L{38mm}L{78mm}}
+\toprule
+Work & Main representation & Role in this study\\
+\midrule
+3D ShapeNets & Volumetric shape model & Source of the ModelNet dataset\\
+PointNet & Shared point features and symmetric aggregation & Context for unordered point-set learning\\
+BPS & Distances to a fixed spatial basis & Source method and classifier architecture\\
+PointCloud-C & Controlled corruption benchmark & Motivation for robustness evaluation\\
+DUP-Net & Outlier removal and upsampling & Related preprocessing and future baseline\\
+\bottomrule
+\end{tabular}
+\caption{Relationship between prior work and the implemented experiment.}
+\end{table}
+\clearpage
+
+\section{Basis Point Set Classification}
+Let a cloud be $X=\{x_i\}_{i=1}^{N}$, where $x_i\in\R^3$. A normalization rule produces $\widetilde X$. A shared basis $B=\{b_j\}_{j=1}^{K}$ is sampled once and retained for every training, validation and test object. The BPS distance feature is
+\begin{equation}
+ f_j(\widetilde X)=\min_{1\leq i\leq N}\|b_j-\widetilde x_i\|_2,
+ \qquad f(\widetilde X)\in\R^K.
+\end{equation}
+The experiment uses $N=2048$ and $K=512$. Reference points are sampled uniformly within a ball of radius $1.7$, using basis seed 13. Nearest-point queries use a spatial search tree. The distances are not signed distances and do not require a watertight mesh.
+
+\textbf{Permutation invariance.} Reordering the cloud changes neither the candidate set in the minimum nor the resulting feature. Each reference location retains its identity, so the feature vector has a fixed order even though the cloud does not. This property does not imply rotation invariance: rotating a cloud relative to the fixed basis can change its distances.
+
+\fig{pipeline}{1.0}{The implemented classification pipeline. Only normalization differs between A, B and C. The BPS basis and classifier dimensions are shared.}
+
+\subsection{Multilayer perceptron}
+A perceptron computes a weighted sum and a decision. The classifier here extends this idea with two hidden layers and nonlinear activations. For a hidden layer,
+\begin{equation}
+ h=\operatorname{ReLU}(Wf+b),\qquad \operatorname{ReLU}(u)=\max(0,u).
+\end{equation}
+The implemented architecture is input batch normalization, a 512-unit linear layer, ReLU, batch normalization and dropout, followed by a second 512-unit block and a 40-logit output layer. Dropout probability is $0.8$, following the author example. The model has \ParameterCount\ trainable parameters.
+
+For logits $z$ and category $y$, training minimizes multiclass cross-entropy,
+\begin{equation}
+ \mathcal L(z,y)=-z_y+\log\!\left(\sum_{c=1}^{40}\exp(z_c)\right).
+\end{equation}
+Backpropagation computes parameter gradients and Adam updates the parameters. At inference, the predicted class is the largest logit. Batch normalization uses stored training statistics and dropout is disabled. No labels or clean-coordinate statistics are supplied to the test-time normalization.
+\clearpage
+
+\section{Normalization and Outlier Model}
+\subsection{Three normalization rules}
+The baseline centre and scale are
+\begin{equation}
+ c_A=\frac1N\sum_i x_i,\qquad
+ s_A=\max_i\|x_i-c_A\|_2,\qquad
+ \widetilde x_i=\frac{x_i-c_A}{s_A}.
+\end{equation}
+Pipeline B substitutes the coordinate-wise median $c_M$ for the mean while retaining maximum scaling. Pipeline C also replaces the maximum by the 95th percentile:
+\begin{equation}
+ s_B=\max_i\|x_i-c_M\|_2,\qquad
+ s_C=Q_{0.95}\bigl(\{\|x_i-c_M\|_2\}_{i=1}^{N}\bigr).
+\end{equation}
+All scales are lower bounded by $10^{-8}$ to handle degenerate inputs. For C, the bulk of the cloud lies within a comparable radius; the entire cloud need not lie in the unit ball. No point is deleted, clipped or projected onto a sphere during normalization.
+
+\begin{table}[!ht]\centering
+\begin{tabular}{lll}
+\toprule Pipeline & Centre & Scale\\\midrule
+A & Mean & Maximum radius\\
+B & Coordinate-wise median & Maximum radius\\
+C & Coordinate-wise median & 95th-percentile radius\\\bottomrule
+\end{tabular}
+\caption{Ablation design. B changes centring; C changes scaling relative to B. Each pipeline has a separately trained classifier.}
+\end{table}
+
+\subsection{Controlled distant outliers}
+For each cloud, $m=\operatorname{round}(pN)$ points are selected without replacement. Their coordinates are replaced by
+\begin{equation}
+ x_i'=c_0+\rho r_0 u_i,\qquad \|u_i\|_2=1,
+\end{equation}
+where $c_0$ and $r_0$ are the uncorrupted cloud's mean and maximum radius. They define the synthetic corruption only; the classifier never receives them. Directions $u_i$ are independently sampled uniformly on the sphere. The point count remains 2048. Replacement also removes a small number of genuine samples, which is part of this protocol.
+
+Nominal replacement fractions are 1, 2, 5 and 10 percent; distances are $\rho\in\{3,5,10\}$. Integer rounding gives 20, 41, 102 and 205 replaced points, respectively. The actual fractions are retained in the raw results. Object-specific seeds keep the selected points and directions matched across pipelines and distance conditions.
+\clearpage
+
+\section{Experimental Protocol}
+\subsection{Data and model selection}
+The processed dataset contains 9840 training clouds and 2468 test clouds across 40 categories. A fixed stratified split reserves 1968 training clouds for validation and uses the remaining 7872 for fitting. The official test membership remains unchanged. File URLs and SHA-256 hashes, class names, split indices and the BPS basis are saved with the experiment.
+
+All classifiers are trained on clean clouds. There is no corruption augmentation, so the comparison isolates the normalization rule. Architecture, reference locations, split and optimizer settings are shared. Three training seeds, 13, 37 and 73, control initialization, dropout and batch shuffling. Corresponding pipelines use matched seeds.
+
+\begin{table}[!ht]\centering\small
+\begin{tabular}{L{65mm}L{83mm}}
+\toprule Setting & Value\\\midrule
+Input and BPS features & 2048 xyz points; 512 distances\\
+Hidden layers and dropout & 512 and 512 units; dropout probability 0.8\\
+Optimizer and initial learning rate & Adam; $10^{-3}$\\
+Batch size and epoch limit & 512; 1200 epochs maximum\\
+Validation and early stopping & Every 5 epochs; patience 200 epochs\\
+Checkpoint selection & Highest validation accuracy; lower validation loss breaks ties\\
+Configured learning-rate reduction & $10^{-4}$ at epoch 1000, if training reaches it\\
+Training and corruption seeds & 3 training seeds; 3 corruption draws per nonzero condition\\
+Hardware & NVIDIA GeForce RTX 4050 Laptop GPU with 6 GB VRAM\\
+Arithmetic & Float32; deterministic PyTorch algorithms; TF32 disabled\\
+\bottomrule
+\end{tabular}
+\caption{Shared settings. The classifier is an adaptation of the public BPS example, not an exact reproduction of every paper training setting.}
+\end{table}
+
+\subsection{Evaluation and uncertainty}
+Overall accuracy is the fraction of correctly classified test objects. Mean class accuracy averages the recall of the 40 categories, giving each category equal weight. Each nonzero severity has three corruption draws, with seeds 101, 202 and 303. The draws are averaged within each trained model; the reported mean and sample standard deviation then summarize the three training seeds. Repeated predictions of one object are not counted as independent new objects.
+
+The final evaluation contains 333 model-condition rows. The configuration and model checkpoints are frozen before test prediction. Clean accuracy, robustness and failure cases are reported together. Evaluation logs distinguish classifier prediction from feature extraction with geometry diagnostics. The latter includes analysis overhead and is not a standalone preprocessing benchmark.
+\clearpage
+
+\section{Clean Data and Training Results}
+\input{tables/clean.tex}
+The clean test comparison determines whether the altered coordinate convention changes ordinary classification performance. It is not a comparison with published state-of-the-art methods: the validation split, implementation and training selection differ from the paper's full protocol.
+
+\fig{training}{0.94}{Validation accuracy for training seed 13. Checkpoints are selected with validation objects from the training split. The test set is not consulted during training.}
+
+\input{training_commentary.tex}
+
+The shared validation split makes the preprocessing comparison paired at the dataset level. Variation between training seeds reflects initialization, dropout and sample ordering, while differences between category recalls also depend on category size and shape ambiguity. A small difference between clean means should therefore be read alongside its reported variation rather than treated as a guaranteed advantage.
+\clearpage
+
+\section{Classification under Distant Outliers}
+\fig{accuracy_outliers}{1.0}{Overall accuracy under matched outlier replacement at three distances. The zero-percent point is clean evaluation. Corruption draws are averaged within each training seed before computing the displayed mean and standard deviation.}
+
+\input{tables/noise.tex}
+\input{noise_commentary.tex}
+
+The comparison between A and B tests whether robust centring is sufficient when scaling still depends on an extreme point. Comparing B with C then tests the scale estimate. The radius sweep checks whether moving the same outliers farther away changes the conclusions. The results apply to this shell-replacement protocol, not to every spatial distribution of outliers.
+\clearpage
+
+\section{Mechanism and Failure Analysis}
+\fig{mechanism}{1.0}{Geometry diagnostics for outliers at five times the clean radius. Left: main-object shrinkage relative to clean preprocessing, measured on retained inliers. Right: relative Euclidean change in BPS features. The geometry measurements do not use classifier predictions.}
+
+\subsection{Why maximum scaling can shrink the object}
+If a clean object's radius is approximately one and a distant point appears at radius $\rho$, the maximum-based scale is approximately $\rho$. The main object's normalized dimensions are then approximately $1/\rho$ of their previous values. Median centring can stabilize location without preventing this scaling effect. This explains why B is a necessary control.
+
+For C, a small number of extreme radii can fall above the selected percentile. The estimated scale can remain close to that of the main object. However, this is conditional on the distribution and fraction of contamination. Coordinate-wise medians do not guarantee the recovery of a true object centre, and percentile scaling does not remove bad points.
+
+\subsection{Why the percentile rule can also fail}
+When enough extreme points occupy the upper tail, the 95th percentile can itself fall among outlier radii. The ten-percent condition deliberately tests this situation. Finite sampling, quantile interpolation and the original radial distribution affect the transition; a universal exact threshold is not claimed.
+
+\input{mechanism_commentary.tex}
+\clearpage
+
+\section{Qualitative Example and Interpretation}
+\fig{cloud_example}{0.98}{The first chair in test-file order with two-percent replacement at radius five and corruption seed 101. Top: full coordinate extent. Bottom: a common zoom around the main object. Retained object points are coloured by pipeline and outliers are red. Distant points may lie outside the zoom panels; no outlier removal is performed. The example is selected by category and file order, independently of predictions.}
+
+\input{example_commentary.tex}
+
+Two effects must be distinguished. First, an outlier can change centring and scaling, shifting the locations of all genuine points relative to the basis. Second, an outlier can directly become the nearest neighbour of a basis point and alter that distance feature. The normalization variants target the first effect. The present distant-shell construction primarily stresses scale estimation; it does not adequately test arbitrary nearby clutter that can affect the second mechanism.
+
+The illustration supports a geometric interpretation rather than a visual claim of denoising. Red points are retained in every pipeline. Classification conclusions come from the full test set rather than this selected visualization.
+\clearpage
+
+\section{Limitations and Further Work}
+\textbf{Controlled corruption.} Spherical-shell replacement is designed to expose one failure mechanism. Real sensors produce structured missing regions, nonuniform density, pose variation and correlated errors. Accuracy in this experiment does not establish deployment readiness.
+
+\textbf{Dataset scope.} ModelNet40 contains CAD-derived shapes. The study uses the standard processed split but does not include real scans or cross-dataset testing. It also studies object classification rather than detection or segmentation.
+
+\textbf{Representation.} Basic BPS distances are point-order invariant but not generally rotation invariant. Reference count and radius are fixed. The percentiles are not asserted to be optimal for all categories or corruption types.
+
+\textbf{Comparison scope.} There is no empirical claim against PointNet, PointCloud-C methods or learned denoisers. A 95th percentile is a conventional robust statistic, and the source authors already suggest robust normalization. The work contributes an implementation and controlled classification analysis of that idea.
+
+\textbf{Uncertainty.} Three training seeds and three corruption draws provide a limited view of variation. Error bars summarize training-seed variability after averaging draws; they are not confidence bounds for all future datasets. The same test objects recur across conditions.
+
+\textbf{Next experiments.} A useful extension is a statistical outlier-removal baseline, with filter parameters chosen using validation data and clean-data effects measured explicitly. Clean-trained and noise-augmented classifiers could then separate preprocessing benefits from learned robustness. Nearby clutter, Gaussian jitter and missing regions should be tested with clearly specified protocols before moving to real scanned data.
+
+\section{Conclusion}
+The comparison identifies scale estimation as a failure mechanism in a clean-trained BPS classifier. Median centring alone leaves maximum-based shrinkage largely unchanged. Percentile scaling preserves the main-object size at low contamination, but loses this protection under heavy contamination.
+
+\input{conclusion_commentary.tex}
+
+\clearpage
+
+\section*{Reproducibility and Attribution}
+The project contains the frozen configuration, dataset download script, preprocessing and classifier code, fixed split indices, a saved basis, nine model checkpoints, training histories, raw metric tables and per-object predictions. The standard entry points are \texttt{scripts/run\_study.py} for preparation, training and evaluation, followed by \texttt{scripts/analyze.py} for aggregation and figures. The README records the exact commands and software environment. All reported results are generated by these scripts; planned extensions are identified separately.
+
+\textbf{Computational assistance.} Codex assisted with code implementation, experiment execution, analysis and report drafting. The source method, architecture and data are attributed below. The experiment outputs and source files are retained with the project.
+
+\begin{thebibliography}{9}\small
+\bibitem{bps} S. Prokudin, C. Lassner and J. Romero, ``Efficient Learning on Point Clouds With Basis Point Sets,'' \emph{ICCV}, pp. 4332--4341, 2019. \url{https://arxiv.org/abs/1908.09186}. Author implementation, commit \texttt{26788bceee94950b884a5f5c481aafee3b4fd4dc}: \url{https://github.com/sergeyprokudin/bps}.
+\bibitem{pointnet} C. R. Qi, H. Su, K. Mo and L. J. Guibas, ``PointNet: Deep Learning on Point Sets for 3D Classification and Segmentation,'' \emph{CVPR}, pp. 652--660, 2017. \url{https://arxiv.org/abs/1612.00593}.
+\bibitem{pointcloudc} J. Ren, L. Pan and Z. Liu, ``Benchmarking and Analyzing Point Cloud Classification under Corruptions,'' \emph{ICML}, PMLR 162, pp. 18559--18575, 2022. \url{https://proceedings.mlr.press/v162/ren22c.html}.
+\bibitem{shapenets} Z. Wu, S. Song, A. Khosla, F. Yu, L. Zhang, X. Tang and J. Xiao, ``3D ShapeNets: A Deep Representation for Volumetric Shapes,'' \emph{CVPR}, pp. 1912--1920, 2015. \url{https://3dshapenets.cs.princeton.edu/}.
+\bibitem{dupnet} H. Zhou, K. Chen, W. Zhang, H. Fang, W. Zhou and N. Yu, ``DUP-Net: Denoiser and Upsampler Network for 3D Adversarial Point Clouds Defense,'' \emph{ICCV}, pp. 1961--1970, 2019.
+\bibitem{data} PointNet ModelNet40 HDF5 data, public ETH research mirror. \url{https://share.phys.ethz.ch/~gseg/Predator/data/modelnet40_ply_hdf5_2048/}. Retrieved 1 November 2026. Per-file SHA-256 hashes are included in the project provenance record.
+\end{thebibliography}
+\end{document}

@@ -1,0 +1,119 @@
+{
+  "config": {
+    "dataset": "ModelNet40 ply_hdf5_2048",
+    "n_points": 2048,
+    "n_basis": 512,
+    "basis_radius": 1.7,
+    "basis_seed": 13,
+    "split_seed": 2026,
+    "validation_fraction": 0.2,
+    "training_seeds": [
+      13,
+      37,
+      73
+    ],
+    "pipelines": [
+      "A",
+      "B",
+      "C"
+    ],
+    "hidden_sizes": [
+      512,
+      512
+    ],
+    "dropout": 0.8,
+    "batch_size": 512,
+    "learning_rate": 0.001,
+    "learning_rate_drop_epoch": 1000,
+    "final_learning_rate": 0.0001,
+    "max_epochs": 1200,
+    "eval_every": 5,
+    "early_stopping_patience_epochs": 200,
+    "corruption_seeds": [
+      101,
+      202,
+      303
+    ],
+    "outlier_fractions": [
+      0.01,
+      0.02,
+      0.05,
+      0.1
+    ],
+    "outlier_radii": [
+      3.0,
+      5.0,
+      10.0
+    ],
+    "primary_condition": {
+      "outlier_fraction": 0.02,
+      "outlier_radius": 5.0
+    },
+    "percentile": 95.0,
+    "notes": "Settings fixed before any final test evaluation. Clean-trained models only. Spherical outlier replacement relative to each uncorrupted cloud's centre and maximum radius; no clean statistics are supplied to normalization or classifiers."
+  },
+  "config_sha256": "39984587a0e18c3624cbd5069e159a2a3d4faac6705aa7d1cfd67d10040d3d64",
+  "dataset_provenance_sha256": "1791f19a0929475a31838db7d4ec240e7c05532a9965dde277c0ad56db476055",
+  "train_objects": 7872,
+  "validation_objects": 1968,
+  "test_objects": 2468,
+  "classes": [
+    "airplane",
+    "bathtub",
+    "bed",
+    "bench",
+    "bookshelf",
+    "bottle",
+    "bowl",
+    "car",
+    "chair",
+    "cone",
+    "cup",
+    "curtain",
+    "desk",
+    "door",
+    "dresser",
+    "flower_pot",
+    "glass_box",
+    "guitar",
+    "keyboard",
+    "lamp",
+    "laptop",
+    "mantel",
+    "monitor",
+    "night_stand",
+    "person",
+    "piano",
+    "plant",
+    "radio",
+    "range_hood",
+    "sink",
+    "sofa",
+    "stairs",
+    "stool",
+    "table",
+    "tent",
+    "toilet",
+    "tv_stand",
+    "vase",
+    "wardrobe",
+    "xbox"
+  ],
+  "split_overlap": 0,
+  "basis_sha256": "7ed11489869f2dbfe4fdde871afbd308806dab48e8b2bfaa4509f8a21388cc06",
+  "created_utc": "2026-11-01T15:37:58Z",
+  "preparation_timings": [
+    {
+      "pipeline": "A",
+      "prepare_seconds_this_run": 1.1972006177529693e-05
+    },
+    {
+      "pipeline": "B",
+      "prepare_seconds_this_run": 7.454014848917723e-06
+    },
+    {
+      "pipeline": "C",
+      "prepare_seconds_this_run": 6.353016942739487e-06
+    }
+  ]
+}

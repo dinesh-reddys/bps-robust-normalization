@@ -1,0 +1,59 @@
+{
+  "passed": true,
+  "metric_rows_verified": 333,
+  "prediction_files": 37,
+  "train_objects": 9840,
+  "test_objects": 2468,
+  "train_validation_overlap": 0,
+  "official_mesh_identity_overlap": 0,
+  "spatial_tree_matches_brute_force": true,
+  "dataset_file_hashes_verified": 17,
+  "models": [
+    {
+      "pipeline": "A",
+      "seed": 13,
+      "checkpoint_hash_matches": true
+    },
+    {
+      "pipeline": "A",
+      "seed": 37,
+      "checkpoint_hash_matches": true
+    },
+    {
+      "pipeline": "A",
+      "seed": 73,
+      "checkpoint_hash_matches": true
+    },
+    {
+      "pipeline": "B",
+      "seed": 13,
+      "checkpoint_hash_matches": true
+    },
+    {
+      "pipeline": "B",
+      "seed": 37,
+      "checkpoint_hash_matches": true
+    },
+    {
+      "pipeline": "B",
+      "seed": 73,
+      "checkpoint_hash_matches": true
+    },
+    {
+      "pipeline": "C",
+      "seed": 13,
+      "checkpoint_hash_matches": true
+    },
+    {
+      "pipeline": "C",
+      "seed": 37,
+      "checkpoint_hash_matches": true
+    },
+    {
+      "pipeline": "C",
+      "seed": 73,
+      "checkpoint_hash_matches": true
+    }
+  ],
+  "config_sha256": "39984587a0e18c3624cbd5069e159a2a3d4faac6705aa7d1cfd67d10040d3d64"
+}

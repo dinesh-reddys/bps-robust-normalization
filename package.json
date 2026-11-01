@@ -1,0 +1,10 @@
+{
+  "name": "bps-robust-normalization-slides",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Optional editable presentation builder for the BPS study",
+  "scripts": {"build:slides": "node scripts/build_slides.js"},
+  "engines": {"node": ">=20"},
+  "dependencies": {"jszip": "3.10.1", "pptxgenjs": "4.0.1"},
+  "overrides": {"image-size": "2.0.4"}
+}
