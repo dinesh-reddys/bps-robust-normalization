@@ -7,14 +7,15 @@
    - Inspected commit: `26788bceee94950b884a5f5c481aafee3b4fd4dc`.
    - The MLP follows `bps_demos/train_modelnet_mlp.py`: input BatchNorm; two 512-unit Linear/ReLU/BatchNorm/Dropout blocks; 40 logits; dropout probability 0.8; Adam. Our implementation uses validation selection, early stopping, repeated seeds and correct cross-entropy evaluation. It is a baseline adaptation, not an exact reproduction of every paper setting.
    - BPS geometry is independently implemented with scipy cKDTree. The shared random ball basis follows the author's sampling order, rounded to float32. Source code licence: MIT-0.
-2. Charles R. Qi, Hao Su, Kaichun Mo and Leonidas J. Guibas. **PointNet: Deep Learning on Point Sets for 3D Classification and Segmentation**. CVPR, 2017, pp. 652–660. https://arxiv.org/abs/1612.00593
-   - Related work on learning directly from unordered point sets. PointNet is discussed, not trained or experimentally compared here.
-3. Jiawei Ren, Liang Pan and Ziwei Liu. **Benchmarking and Analyzing Point Cloud Classification under Corruptions**. ICML, PMLR 162, 2022, pp. 18559–18575. https://proceedings.mlr.press/v162/ren22c.html
-   - Related work establishing controlled corruption evaluation. Our spherical outlier replacement is a custom diagnostic protocol, not the official PointCloud-C benchmark.
-4. Zhirong Wu, Shuran Song, Aditya Khosla, Fisher Yu, Linguang Zhang, Xiaoou Tang and Jianxiong Xiao. **3D ShapeNets: A Deep Representation for Volumetric Shapes**. CVPR, 2015, pp. 1912–1920. https://3dshapenets.cs.princeton.edu/
-   - Source of ModelNet. We use the 2048-point HDF5 conversion distributed for PointNet, not the volumetric model.
-5. Hang Zhou, Kejiang Chen, Weiming Zhang, Han Fang, Wenbo Zhou and Nenghai Yu. **DUP-Net: Denoiser and Upsampler Network for 3D Adversarial Point Clouds Defense**. ICCV, 2019, pp. 1961–1970. https://openaccess.thecvf.com/content_ICCV_2019/html/Zhou_DUP-Net_Denoiser_and_Upsampler_Network_for_3D_Adversarial_Point_Clouds_ICCV_2019_paper.html
-   - Related work and a future filtering comparison. No claim that normalization removes outliers or provides an adversarial defence.
+2. Zhirong Wu, Shuran Song, Aditya Khosla, Fisher Yu, Linguang Zhang, Xiaoou Tang and Jianxiong Xiao. **3D ShapeNets: A Deep Representation for Volumetric Shapes**. CVPR, 2015, pp. 1912–1920. https://3dshapenets.cs.princeton.edu/
+   - Source of ModelNet. We use its CAD-derived object dataset through the 2048-point HDF5 conversion, not the paper's volumetric model.
+
+The report cites these two research papers because they directly supply the method and dataset. Its spherical outlier replacement is a custom diagnostic protocol, and its comparison is limited to preprocessing rules within BPS–MLP.
+
+## Software and report format
+
+- PointNet data-conversion distribution: https://github.com/charlesq34/pointnet. This credits the processed HDF5 dataset; no PointNet classifier is trained or compared.
+- The cover adapts the MUST Lab, IIT Kharagpur M.Tech LaTeX template. The unmodified institute emblem comes from that archive. See [template provenance](report/TEMPLATE_SOURCES.md) for source links and adaptations to the supervisor's BTP-1 requirements.
 
 ## Dataset
 

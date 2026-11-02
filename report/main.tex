@@ -6,6 +6,7 @@
 \usepackage{amsmath,amssymb,graphicx,booktabs,array}
 \usepackage{caption}
 \usepackage[hidelinks]{hyperref}
+\hypersetup{pdftitle={Effect of Robust Normalization on BPS Based 3D Object Classification},pdfauthor={Somavarapu Dinesh Reddy}}
 \usepackage{enumitem}
 \newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
 \setlength{\parindent}{0pt}
@@ -19,33 +20,38 @@
 \begin{document}
 \begin{titlepage}
 \centering
-{\Large Indian Institute of Technology Kharagpur\par}
-\vspace{6mm}
-{\large Department of Electronics and Electrical\\Communication Engineering\par}
-\vspace{13mm}
-{\LARGE\bfseries Effect of Robust Normalization on\\[3mm] BPS Based 3D Object Classification\par}
-\vspace{8mm}
 {\large BTP 1 Evaluation Report\par}
-\vspace{9mm}
+\vspace{6mm}
+{\LARGE\bfseries Effect of Robust Normalization on\\[2mm] BPS Based 3D Object Classification\par}
+\vspace{6mm}
+{Submitted by\par}
 {\large\bfseries SOMAVARAPU DINESH REDDY\par}
-{\large Roll Number 23EC39025\par}
-\vspace{3mm}
+{Roll Number: 23EC39025\par}
 {M.Tech in Vision and Intelligent Systems\par}
+\vspace{4mm}
+{Under the supervision of\par}
+{\large\bfseries Prof. Prabir Kumar Biswas\par}
 \vspace{5mm}
-{Supervisor: Prof. Prabir Kumar Biswas\par}
-{2 November 2026\par}
-\vspace{11mm}
+\includegraphics[height=33mm]{images/iitkgp_logo.jpg}\par
+\vspace{4mm}
+{Department of Electronics and Electrical\\Communication Engineering\par}
+{\large\bfseries Indian Institute of Technology Kharagpur\par}
+{3 November 2026\par}
+\vspace{5mm}
+\hrule
+\vspace{4mm}
 \begin{minipage}{\linewidth}
+\small
 \textbf{Self declaration}\par
 I declare that this report presents bona fide work prepared for my BTP 1 evaluation. The research ideas, dataset, model architecture and material obtained from other sources are referenced and attributed. The use of computational assistance is acknowledged at the end of the report. I take responsibility for the contents of the report submitted under my name.
-\vspace{7mm}
+\vspace{5mm}
 
 Student signature: \rule{55mm}{0.3pt}\hfill Date: \rule{27mm}{0.3pt}
-\vspace{10mm}
+\vspace{6mm}
 
 \textbf{Supervisor endorsement}\par
 Reviewed and endorsed for the BTP 1 evaluation.
-\vspace{7mm}
+\vspace{5mm}
 
 Supervisor signature: \rule{51mm}{0.3pt}\hfill Date: \rule{27mm}{0.3pt}
 
@@ -69,32 +75,21 @@ BPS offers a direct route to a conventional classifier. It records distances fro
 The work implements a BPS classifier, compares three normalization rules, and measures both predictive and geometric effects. The centring-only control distinguishes changes in location estimation from changes in scale estimation. The extension follows a limitation already identified in the BPS supplementary material. Its contribution is the specified classification experiment and analysis, rather than a claim that robust normalization is a new general method.
 \clearpage
 
-\section{Related Work}
-\textbf{ModelNet and 3D ShapeNets.} Wu et al. introduced ModelNet for learning and evaluating object shape representations~\cite{shapenets}. This study uses the public 2048-point HDF5 conversion distributed for PointNet. The data represents sampled CAD surfaces. It does not reproduce the incomplete views or clutter of a physical depth sensor.
+\section{Source Method and Scope of the Study}
+\subsection{Basis Point Sets: the method used}
+Prokudin, Lassner and Romero introduce Basis Point Sets as a fixed-length representation of a point cloud~\cite{bps}. A common set of reference locations is placed in space. For each location, the distance to the closest cloud point is recorded. These distances form a vector that can be classified by a multilayer perceptron. The present implementation uses this distance representation, the author's random-basis sampling procedure and the two-hidden-layer classification architecture supplied with the paper.
 
-\textbf{PointNet.} Qi et al. learn per-point features and aggregate them using a symmetric function, allowing classification of unordered point sets~\cite{pointnet}. PointNet is an important reference for direct point processing. Here it provides context; no PointNet training or empirical comparison is claimed.
+The BPS supplementary material also discusses a preprocessing limitation: distant outliers can change size normalization and make the main shape too small. That discussion concerns human-mesh registration and suggests robust normalization or synthetic noise as possible remedies. It motivates the present classification experiment; robust normalization itself is not claimed as a new idea.
 
-\textbf{Basis Point Sets.} Prokudin et al. encode a cloud using nearest-point distances or displacement vectors from a fixed basis~\cite{bps}. Their classification example uses distance features and an MLP. The supplied architecture and random-basis sampling inform this implementation. The BPS supplementary discussion identifies outliers that alter size normalization in human-mesh registration and suggests robust normalization or synthetic noise as possible remedies. The present study investigates a particular median-and-percentile variant for object classification.
+\subsection{3D ShapeNets: the dataset source}
+Wu et al. introduced ModelNet as a dataset of 3D CAD models~\cite{shapenets}. This study uses ModelNet40, which contains 40 object categories, through the public 2048-point HDF5 conversion distributed with PointNet. Only the dataset is taken from this source. The volumetric representation and neural network proposed in 3D ShapeNets are not implemented here. The HDF5 conversion and download mirror are credited separately in the reproducibility section.
 
-\textbf{Corruption evaluation.} Ren et al. benchmark point-cloud classifiers under multiple corruptions~\cite{pointcloudc}. Their work motivates evaluation beyond clean accuracy. The spherical replacement protocol here is a diagnostic experiment devised to isolate a preprocessing effect. Its results are not official PointCloud-C scores and should not be compared numerically with that benchmark.
+\subsection{Implemented extension}
+The experiment asks whether changing the centre and scale estimates preserves useful BPS features when a cloud contains distant outliers. Pipeline A uses the mean and maximum radius. Pipeline B changes only the centre to a coordinate-wise median. Pipeline C also replaces the maximum radius with the 95th percentile. B therefore tests whether robust centring alone explains any benefit observed in C.
 
-\textbf{Outlier filtering.} DUP-Net combines statistical outlier removal with learned upsampling for adversarial point-cloud defence~\cite{dupnet}. It establishes that preprocessing which removes points is an existing line of work. The methods studied here retain the corrupted cloud and change only its centre and scale estimates. A filter is a relevant future comparison, especially because very distant synthetic outliers may be straightforward to identify.
+The work consists of implementing these three pipelines, training clean-data classifiers under matched settings, and evaluating controlled outlier replacements. Geometric measurements test whether accuracy changes coincide with object shrinkage and changes in the BPS vector. Repeated training seeds measure variability, while heavier contamination checks where the proposed scale rule fails.
 
-\begin{table}[!ht]
-\centering\small
-\begin{tabular}{L{31mm}L{38mm}L{78mm}}
-\toprule
-Work & Main representation & Role in this study\\
-\midrule
-3D ShapeNets & Volumetric shape model & Source of the ModelNet dataset\\
-PointNet & Shared point features and symmetric aggregation & Context for unordered point-set learning\\
-BPS & Distances to a fixed spatial basis & Source method and classifier architecture\\
-PointCloud-C & Controlled corruption benchmark & Motivation for robustness evaluation\\
-DUP-Net & Outlier removal and upsampling & Related preprocessing and future baseline\\
-\bottomrule
-\end{tabular}
-\caption{Relationship between prior work and the implemented experiment.}
-\end{table}
+This is an experimental extension of an existing representation. It retains every corrupted point and does not perform denoising. Its evidence is limited to the specified synthetic corruption on ModelNet40; it does not establish robustness to all sensor errors or superiority over other classification architectures.
 \clearpage
 
 \section{Basis Point Set Classification}
@@ -239,7 +234,7 @@ The illustration supports a geometric interpretation rather than a visual claim 
 
 \textbf{Representation.} Basic BPS distances are point-order invariant but not generally rotation invariant. Reference count and radius are fixed. The percentiles are not asserted to be optimal for all categories or corruption types.
 
-\textbf{Comparison scope.} There is no empirical claim against PointNet, PointCloud-C methods or learned denoisers. A 95th percentile is a conventional robust statistic, and the source authors already suggest robust normalization. The work contributes an implementation and controlled classification analysis of that idea.
+\textbf{Comparison scope.} The comparison is between three preprocessing rules within the same BPS--MLP architecture. Other classifiers and learned denoisers are not evaluated. A 95th percentile is a conventional robust statistic, and the source authors already suggest robust normalization. The work contributes an implementation and controlled classification analysis of that idea.
 
 \textbf{Uncertainty.} Three training seeds and three corruption draws provide a limited view of variation. Error bars summarize training-seed variability after averaging draws; they are not confidence bounds for all future datasets. The same test objects recur across conditions.
 
@@ -257,12 +252,15 @@ The project contains the frozen configuration, dataset download script, preproce
 
 \textbf{Computational assistance.} Codex assisted with code implementation, experiment execution, analysis and report drafting. The source method, architecture and data are attributed below. The experiment outputs and source files are retained with the project.
 
-\begin{thebibliography}{9}\small
-\bibitem{bps} S. Prokudin, C. Lassner and J. Romero, ``Efficient Learning on Point Clouds With Basis Point Sets,'' \emph{ICCV}, pp. 4332--4341, 2019. \url{https://arxiv.org/abs/1908.09186}. Author implementation, commit \texttt{26788bceee94950b884a5f5c481aafee3b4fd4dc}: \url{https://github.com/sergeyprokudin/bps}.
-\bibitem{pointnet} C. R. Qi, H. Su, K. Mo and L. J. Guibas, ``PointNet: Deep Learning on Point Sets for 3D Classification and Segmentation,'' \emph{CVPR}, pp. 652--660, 2017. \url{https://arxiv.org/abs/1612.00593}.
-\bibitem{pointcloudc} J. Ren, L. Pan and Z. Liu, ``Benchmarking and Analyzing Point Cloud Classification under Corruptions,'' \emph{ICML}, PMLR 162, pp. 18559--18575, 2022. \url{https://proceedings.mlr.press/v162/ren22c.html}.
+\subsection*{Code and data resources}
+The BPS author implementation is available at \url{https://github.com/sergeyprokudin/bps}. The inspected revision is recorded in \texttt{SOURCES.md}; the supplied reference code retains its licence. The BPS geometry routines and experimental pipeline are implemented in the project code.
+
+The processed point clouds follow the conversion distributed in the \href{https://github.com/charlesq34/pointnet}{PointNet code repository}. Files were downloaded from the \href{https://share.phys.ethz.ch/~gseg/Predator/data/modelnet40_ply_hdf5_2048/}{public ETH research mirror} on 1 November 2026. Per-file URLs, sizes and SHA-256 hashes are retained in the dataset provenance record. Citing the conversion credits data preparation; no PointNet model is trained in this study.
+
+The cover layout adapts the title-page conventions of the MUST Lab, IIT Kharagpur M.Tech LaTeX template. The emblem is supplied with that template. Template links and formatting adaptations are recorded in \texttt{TEMPLATE\_SOURCES.md} in the report source archive.
+
+\begin{thebibliography}{2}\small
+\bibitem{bps} S. Prokudin, C. Lassner and J. Romero, ``Efficient Learning on Point Clouds With Basis Point Sets,'' \emph{ICCV}, pp. 4332--4341, 2019. \url{https://arxiv.org/abs/1908.09186}.
 \bibitem{shapenets} Z. Wu, S. Song, A. Khosla, F. Yu, L. Zhang, X. Tang and J. Xiao, ``3D ShapeNets: A Deep Representation for Volumetric Shapes,'' \emph{CVPR}, pp. 1912--1920, 2015. \url{https://3dshapenets.cs.princeton.edu/}.
-\bibitem{dupnet} H. Zhou, K. Chen, W. Zhang, H. Fang, W. Zhou and N. Yu, ``DUP-Net: Denoiser and Upsampler Network for 3D Adversarial Point Clouds Defense,'' \emph{ICCV}, pp. 1961--1970, 2019.
-\bibitem{data} PointNet ModelNet40 HDF5 data, public ETH research mirror. \url{https://share.phys.ethz.ch/~gseg/Predator/data/modelnet40_ply_hdf5_2048/}. Retrieved 1 November 2026. Per-file SHA-256 hashes are included in the project provenance record.
 \end{thebibliography}
 \end{document}

@@ -24,10 +24,14 @@ def main():
     if (DEST/'main.pdf').exists(): (DEST/'main.pdf').replace(pdf)
     if (DEST/'main.log').exists(): (DEST/'main.log').replace(ROOT/'logs/report_tex.log')
     report=PdfReader(pdf)
-    assert len(report.pages)==12
+    report_pages=len(report.pages)
+    assert 10 <= report_pages <= 12
     report_text='\n'.join(page.extract_text() for page in report.pages)
     assert 'Self declaration' in report.pages[0].extract_text()
     assert '23EC39025' in report.pages[0].extract_text()
+    assert 'Supervisor signature' in report.pages[0].extract_text()
+    assert len(report.pages[0].images)==1
+    assert (ROOT/'report/main.tex').read_text().count('\\bibitem{')==2
     assert '86.98%' in report_text and '1.01%' in report_text
     assert not re.search(r'\b(TODO|TBD|lorem|ipsum)\b',report_text,re.I)
     pptx=DEST/'BTP1_Presentation.pptx'
@@ -47,12 +51,13 @@ def main():
         assert digest(ROOT/'report/images'/name)==expected
     record={
         'completed_utc':datetime.now(timezone.utc).isoformat(),
-        'report_pages':12,'presentation_slides':10,'editable_native_charts':3,
+        'report_pages':report_pages,'presentation_slides':10,'editable_native_charts':3,
+        'report_research_paper_references':2,'report_cover_institute_emblem':True,
         'presentation_target_seconds':540,'presentation_limit_seconds':600,'qa_seconds_separate':120,
         'speaker_script_words':sum(len(re.findall(r"\b[\w'-]+\b",n['script'])) for n in notes),
         'trained_models':9,'test_objects':2468,'verified_metric_rows':333,
         'geometry_tests_passed':13,'data_model_and_metric_audit_passed':True,
-        'report_visual_review':'All pages inspected; corrected diagram spacing and figure labels',
+        'report_visual_review':'All pages inspected after cover, emblem and two-reference revision',
         'slide_visual_review':'All slides inspected; all native charts structurally validated',
         'signatures':'Blank for student review and supervisor endorsement',
         'files':{pdf.name:digest(pdf),pptx.name:digest(pptx)},
@@ -62,7 +67,7 @@ def main():
 
 The implementation, experiments, report and presentation are complete.
 
-1. Open `BTP1_Report.pdf`. It contains 12 pages, including the declaration and endorsement spaces. Review the contents before signing; obtain the supervisor's endorsement after review.
+1. Open `BTP1_Report.pdf`. It contains REPORT_PAGE_COUNT pages, including the institute emblem, declaration and endorsement spaces. The bibliography contains the two papers used for the method and dataset. Review the contents before signing; obtain the supervisor's endorsement after review.
 2. Open `BTP1_Presentation.pptx`. It contains 10 editable slides and speaker notes targeting 9 minutes. The strict talk limit is 10 minutes; the 2-minute Q&A is separate.
 3. Use `Presentation_Timing.md` for the same timed script outside PowerPoint.
 4. `BTP1_LaTeX_Source.zip` contains the complete report source and figure assets. Upload it to Overleaf with `main.tex` as the main file, or compile locally.
@@ -89,12 +94,12 @@ PYTHONPATH='' .venv/bin/python scripts/demo.py --fraction 0.02 --radius 5
 The example is the first chair in standard test-file order. Its clean predictions are chair in all pipelines. Under the specified corruption, A predicts bowl, B predicts vase and C predicts chair. The report's conclusions use all 2468 test clouds rather than this example alone.
 
 The next preparation step is to understand the paper, implementation, measured results and limitations, then rehearse the timed explanation.
-''')
+'''.replace('REPORT_PAGE_COUNT',str(report_pages)))
 
     source_zip=DEST/'BTP1_LaTeX_Source.zip'
     with zipfile.ZipFile(source_zip,'w',zipfile.ZIP_DEFLATED) as archive:
         for file in sorted((ROOT/'report').rglob('*')):
-            if file.is_file() and file.suffix in {'.tex','.pdf','.json'}:
+            if file.is_file() and file.suffix in {'.tex','.pdf','.json','.png','.jpg','.md'}:
                 archive.write(file,file.relative_to(ROOT/'report'))
         archive.writestr('README.txt','Main file: main.tex\nCompile with pdfLaTeX, XeLaTeX or Tectonic. All figures and generated numerical sections are included.\n')
 

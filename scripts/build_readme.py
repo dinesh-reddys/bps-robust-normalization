@@ -226,7 +226,7 @@ PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest -q tests
 
 ## Report, slides and source
 
-- [12-page report PDF](deliverables/BTP1_Report.pdf)
+- [12-page report PDF](deliverables/BTP1_Report.pdf) — IIT Kharagpur emblem, first-page declaration and signature spaces; two research references with their specific roles explained.
 - [Editable LaTeX project](report/main.tex) · [Download LaTeX source](deliverables/BTP1_LaTeX_Source.zip)
 - [10-slide PowerPoint](deliverables/BTP1_Presentation.pptx)
 - [Speaker script and timing](deliverables/Presentation_Timing.md): **540-second target**, **600-second talk limit**, **120-second Q&A separately**.
@@ -247,7 +247,6 @@ The report remains subject to student review and supervisor endorsement; signatu
 
 - **BPS:** Prokudin, Lassner and Romero, *Efficient Learning on Point Clouds With Basis Point Sets*, ICCV 2019. [Paper](https://arxiv.org/abs/1908.09186) · [Author code](https://github.com/sergeyprokudin/bps).
 - **Data:** Wu et al., *3D ShapeNets*, CVPR 2015; PointNet's 2048-point HDF5 conversion. [Data provenance and hashes](results/dataset_provenance.json) · [Chair provenance](examples/chair.json). Original dataset rights and terms remain applicable.
-- **Related robustness work:** Ren, Pan and Liu, ICML 2022. [Paper](https://proceedings.mlr.press/v162/ren22c.html). Our spherical replacement protocol is a custom diagnostic, not the official PointCloud-C benchmark.
 - [Full sources and implementation attribution](SOURCES.md). The included author reference code retains its MIT-0 licence. Implementation, execution, analysis and document drafting were assisted by Codex.
 '''
     (ROOT/'README.md').write_text(text.replace('HEADLINE_TABLE',headline).replace('SWEEP_TABLE',sweep))
