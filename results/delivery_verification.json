@@ -1,5 +1,5 @@
 {
-  "completed_utc": "2026-11-02T20:18:26.650818+00:00",
+  "completed_utc": "2026-11-02T20:21:53.698075+00:00",
   "report_pages": 12,
   "presentation_slides": 10,
   "editable_native_charts": 3,
@@ -14,11 +14,11 @@
   "verified_metric_rows": 333,
   "geometry_tests_passed": 13,
   "data_model_and_metric_audit_passed": true,
-  "report_visual_review": "All pages inspected after cover, emblem and two-reference revision",
+  "report_visual_review": "All pages inspected after report text revision",
   "slide_visual_review": "All slides inspected; all native charts structurally validated",
   "signatures": "Blank for student review and supervisor endorsement",
   "files": {
-    "BTP1_Report.pdf": "e2b3a8582be78722860caa0450132651955c4ea59870cb9a0d763f45cf83ea54",
+    "BTP1_Report.pdf": "89106e6e12a7b43048e2eb96dc5be04f3401a289d2bec09a9684a425b1974991",
     "BTP1_Presentation.pptx": "c1c921dc6bf033fa81e999a92222cd37e4db8a4f277c3fd78b23250144676d57"
   }
 }

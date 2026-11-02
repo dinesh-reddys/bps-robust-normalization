@@ -57,7 +57,7 @@ def main():
         'speaker_script_words':sum(len(re.findall(r"\b[\w'-]+\b",n['script'])) for n in notes),
         'trained_models':9,'test_objects':2468,'verified_metric_rows':333,
         'geometry_tests_passed':13,'data_model_and_metric_audit_passed':True,
-        'report_visual_review':'All pages inspected after cover, emblem and two-reference revision',
+        'report_visual_review':'All pages inspected after report text revision',
         'slide_visual_review':'All slides inspected; all native charts structurally validated',
         'signatures':'Blank for student review and supervisor endorsement',
         'files':{pdf.name:digest(pdf),pptx.name:digest(pptx)},
